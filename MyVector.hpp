@@ -336,9 +336,44 @@ private:
 	 * 3. Use a loop to copy elements one-by-one (by value)
 	 * 4. Copy other relevant properties from the 'other' to 'this'
 	 */
-	void copyOther(const MyVector &other){
+	void copyOther(const MyVector &other)
+	{
 
 		// TODO: Your code here
-
+		copyElements(other.elements(), other.size());
 	};
+
+	void copyElements(const T *Elements, size_t size)
+	{
+		// TODO: Your code here
+		if (capacity_ < size)
+		{
+			throw std::range_error("Cannot copy more.");
+		}
+		T *new_elements = new T[size];
+		for (size_t i = 0; i < size; i++)
+		{
+			new_elements[i] = Elements[i];
+		}
+		delete[] elements_;
+		elements_ = new_elements;
+		size_ = size;
+	}
+
+	void assertBounds(size_t index, std::string message = "") const
+	{
+		if (index >= size_)
+		{
+			throw std::range_error(message);
+		}
+	}
+
+	void assertCapacity(size_t c) const
+	{
+		// TODO: Your code here
+		if (capacity_ < c)
+		{
+			throw std::range_error("Cannot hold our existing elements");
+		}
+	}
 }
