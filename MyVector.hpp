@@ -71,7 +71,6 @@ public:
 		size_ = rhs.size();
 		capacity_ = rhs.capacity();
 		elements_ = new T[capacity_];
-		elements_[i] = rhs[i];
 		for (size_t i = 0; i < size_; i++)
 		{
 			elements_[i] = rhs[i];
@@ -341,7 +340,7 @@ private:
 
 		// TODO: Your code here
 		copyElements(other.elements(), other.size());
-	};
+	}
 
 	void copyElements(const T *Elements, size_t size)
 	{
@@ -376,4 +375,4 @@ private:
 			throw std::range_error("Cannot hold our existing elements");
 		}
 	}
-}
+};
