@@ -193,7 +193,7 @@ class MyVector {
 	 * Helper function that is called whenever we need to change the capacity of our vector
 	 * Should throw std::range_error when asked to change to a capacity that cannot hold our existing elements.
 	 * It's probably a good idea to make an additional helper function that decides
-	 * 	whether to change capacity at all (and to what new capacity), that your public functions can rely upon.
+	 * whether to change capacity at all (and to what new capacity), that your public functions can rely upon.
 	 */
 	void changeCapacity(size_t c) {
 		if (c < size_) 
@@ -210,7 +210,7 @@ class MyVector {
 	 * Does not simply copy the other vector's array's pointer
 	 * Does not care about matching the capacity exactly.
 	 * This is a helper function relied upon by the copy constructor and the assignment operator,
-	 * 	to avoid repeated code.
+	 * to avoid repeated code.
 	 *
 	 * You will probably want to make additional helper functions to make this one easier.
 	 * Here is a suggested strategy for copying the internal array:
