@@ -19,10 +19,9 @@ class MyVector {
 	/// Normal constructor
 	MyVector(size_t capacity = MyVector::DEFAULT_CAPACITY) : size_(0), capacity_(capacity), elements_(new T[capacity]) {}
 	/// Copy constructor
-	MyVector(const MyVector &other) : size_(other.size()), capacity_(other.capacity()) {
-		elements_ = new T[capacity_];
+	MyVector(const MyVector &other) : size_(other.size()), capacity_(other.capacity()), elements_(new T[capacity_]) {
 		for (size_t i = 0; i < size_; i++) {
-			elements_[i] = other[i];
+			elements_[i] = other.[i];
 		}
 	}
 	/**
