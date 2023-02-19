@@ -30,7 +30,7 @@ class MyVector {
 	 * Should call clear() so each element gets its destructor called.
 	 * Then, de-allocate the internal array and make it a nullptr, if its not already a nullptr.
 	 */
-	~MyVector() { delete[] elements_; elements_ = nullptr; }
+	~MyVector() { clear(); delete[] elements_; elements_ = nullptr; }
 	/************
 	 * Operators
 	 ************/
@@ -39,12 +39,15 @@ class MyVector {
 		if(this != &rhs) {
 		size_ = rhs.size();
 		capacity_ = rhs.capacity();
-		elements_ = new T[capacity_];
+		T* _new_elements_ = new T[capacity_];
 		for (size_t i = 0; i < size_; i++) 
-			elements_[i] = rhs[i];
-		return *this;
+			_new_elements_[i] = rhs[i];
 		}
+		delete[] elements_;
+		elements_ = _new_elements_;
 	}
+	return *this;
+}
 	/// Operator overload to at()
 	T &operator[](size_t index) const { return elements_[index]; }
 	/************
@@ -59,11 +62,7 @@ class MyVector {
 	 * Return true if we have zero elements in our array (regardless of capacity)
 	 * Otherwise, return false
 	 */
-	bool empty() const {
-		if (size_ == 0) 
-			return true;
-		return false;
-	}
+	bool empty() const { return size_ == 0; }
 	/// Return a reference to the element at an index
 	T &at(size_t index) const {
 		if (index >= size_)
@@ -78,12 +77,12 @@ class MyVector {
 	* Useful if we know we're about to add a large number of elements, and we'd like to avoid the overhead of many internal changes to capacity.
 	*/
 	void reserve(size_t capacity){
-		capacity_ = capacity;
-		T *_elements = new T[capacity_];
 		if (capacity <= capacity_)
 			return;
+		T *_elements = new T[capacity_];
 		for (size_t i = 0; i < size_; i++)
 			_elements[i] = elements_[i];
+		capacity_ = capacity;
 		delete[] elements_;
 		elements_ = _elements;
 	}
@@ -103,23 +102,15 @@ class MyVector {
 	* Should rely on the insert() function to avoid repeating code.
 	* Returns a reference to the newly inserted element
 	*/
-	T &push_back(const T &element) { 
-		if (size_ == capacity_) 
-			reserve(capacity_ * 2);
-		elements_[size_++] = element;
-		return elements_[size_ - 1];
-	}
+
+	// The insert function takes care of resizing the vector if needed and shifting the existing elements to make space for the new element.
+	T &push_back(const T &element) { return insert(size_, element); }
 	/**
 	* Remove the last element in our vector, decreasing the size by 1
 	* Should rely on the erase() function to avoid repeating code.
 	* Returns the new size.
 	*/
-	size_t pop_back() {
-		if (size_ == 0) 
-			throw std::out_of_range("Cannot pop from an empty vector");
-		size_--;
-		return size_;
-	}
+	size_t pop_back() { return erase(size_ - 1); }
 	/**
 	 * Insert an element at some index in our vector, increasing the size by 1
 	 * Scoot all elements at index and beyond, one to the right. This
@@ -131,7 +122,7 @@ class MyVector {
 		if (index > size_) 
 			throw std::out_of_range("Index is out of range");
 		if (size_ == capacity_)
-			reserve(size_ * 2);
+			reserve(capacity_ * 2);
 		size_t i = size_ - 1;
 		while (i > index) {
 			elements_[i] = elements_[i - 1];
@@ -158,8 +149,8 @@ class MyVector {
 		// destructor syntax learned from SI
 		elements_[index].~T();
 		for (int i = index; i < size_ - 1; i++)
-			data_[i] = data_[i + 1];
-		size_--;
+			elements_[i] = elements_[i + 1];
+        size_--;
 		return size_;
 	}
 	/**
@@ -167,11 +158,11 @@ class MyVector {
 	*data by setting size to zero and resetting the capacity.
 	*/
 	void clear() {
-		for (int i = 0; i < size_; i++) 
+		for (size_t i = 0; i < size_; i++) 
 			elements_[i].~T();
 		size_ = 0;
 		capacity_ = 0;
-		operator delete(elements_); // delete the non-array elements
+		delete[]elements_; 
 		elements_ = nullptr;
 	}
 	/**
@@ -195,12 +186,21 @@ class MyVector {
 	 * It's probably a good idea to make an additional helper function that decides
 	 * whether to change capacity at all (and to what new capacity), that your public functions can rely upon.
 	 */
+
+	// The try-catch block you added will ensure that the new memory allocation is properly 
+	// handled in case of an exception during the copy.
 	void changeCapacity(size_t c) {
 		if (c < size_) 
 			throw std::range_error("Cannot hold our existing elements");
 		T *new_elements = new T[c];
-		for (size_t i = 0; i < size_; i++) 
+		try {
+		for (size_t i = 0; i < size_; i++){ 
 			new_elements[i] = elements_[i];
+			}
+		} catch (...) {
+			delete[] new_elements;
+            throw;
+        }
 		capacity_ = c;
 		delete[] elements_;
 		elements_ = new_elements;
