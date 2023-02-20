@@ -6,17 +6,15 @@
 
 template < typename T >
   class MyVector {
-    public: static constexpr size_t DEFAULT_CAPACITY = 64;
+    public:
+	
+	static constexpr size_t DEFAULT_CAPACITY = 64;
 
     static constexpr size_t MINIMUM_CAPACITY = 8;
 
-    MyVector(size_t capacity = MyVector::DEFAULT_CAPACITY): size_(0),
-    capacity_(capacity),
-    elements_(new T[capacity]) {}
+    MyVector(size_t capacity = MyVector::DEFAULT_CAPACITY): size_(0), capacity_(capacity), elements_(new T[capacity]) {}
 
-    MyVector(const MyVector & other): size_(other.size()),
-    capacity_(other.capacity()),
-    elements_(new T[capacity_]) {
+    MyVector(const MyVector &other): size_(other.size()), capacity_(other.capacity()), elements_(new T[capacity_]) {
       for (size_t i = 0; i < size_; i++) {
         elements_[i] = other[i];
       }
@@ -28,24 +26,23 @@ template < typename T >
       elements_ = nullptr;
     }
 
-    MyVector & operator = (const MyVector & rhs) {
-      if (this != & rhs) {
+    MyVector &operator = (const MyVector &rhs) {
+      if (this != &rhs) {
         size_ = rhs.size();
         capacity_ = rhs.capacity();
-        T * _new_elements_ = new T[capacity_];
+        T *_new_elements_ = new T[capacity_];
         for (size_t i = 0; i < size_; i++)
-          _new_elements_[i] = rhs[i];
+          new_elements_[i] = rhs[i];
       }
 
       delete[] elements_;
-      elements_ = _new_elements_;
+      elements_ = new_elements_;
     }
 
-    return * this;
+    return *this;
   }
 
-T &
-  operator[](size_t index) const {
+T &operator[](size_t index) const {
     return elements_[index];
   }
 
@@ -61,7 +58,7 @@ bool empty() const {
   return size_ == 0;
 }
 
-T & at(size_t index) const {
+T &at(size_t index) const {
   if (index >= size_) {
     throw std::out_of_range("Index is out of range");
   }
@@ -69,15 +66,13 @@ T & at(size_t index) const {
 }
 
 void reserve(size_t capacity) {
-  if (capacity < this -> capacity_) {
-    std::
-      throw range_error("Cannot use reserve to shrink space");
+  if (capacity < this-> capacity_) {
+    std::throw range_error("Cannot use reserve to shrink space");
   }
   changeCapacity(capacity);
 }
 
-T & set(size_t index,
-  const T & element) {
+T &set(size_t index, const T &element) {
   if (index >= size_) {
     throw std::out_of_range("Outside the size boundary");
   }
@@ -86,7 +81,7 @@ T & set(size_t index,
   return elements_[index];
 }
 
-T & push_back(const T & element) {
+T &push_back(const T &element) {
   return insert(size_, element);
 }
 
@@ -94,17 +89,15 @@ size_t pop_back() {
   return erase(size_ - 1);
 }
 
-T & insert(size_t index,
-  const T & element) {
+T &insert(size_t index, const T &element) {
   if (index > size_) {
     throw std::out_of_range("Index is out of range");
   }
   if (size_ == capacity_) {
     reserve(capacity_ * 2);
   }
-  size_t i = size_;
   for (size_t i = size_; i > index; --i) {
-    elements_[index] = element[i - 1];
+    elements_[index] = elements_[i - 1];
   }
   elements_[index] = element;
   size_++;
@@ -115,14 +108,15 @@ size_t erase(size_t index) {
   if (index >= size_) {
     throw std::out_of_range("Index is out of bounds");
   }
-  for (int i = index; i < size_ - 1; i++) {
+  for (size_t i = index; i < size_ - 1; i++) {
     elements_[i] = elements_[i + 1];
   }
-  elements_[index].~T();
+  elements_[size_ - 1].~T();
   size_--;
+
   if (capacity_ > MINIMUM_CAPACITY && size_ < capacity_ / 2) {
-    size_t new_c = std::max(size_, MINIMUM_CAPACITY);
-    changeCapacity(new_c);
+    size_t new_capacity = std::max(size_, MINIMUM_CAPACITY);
+    changeCapacity(new_capacity);
   }
 
   return size_;
@@ -136,23 +130,27 @@ void clear() {
 }
 
 private:
-  size_t size_ = 0;
+
+size_t size_ = 0;
 
 size_t capacity_ = 0;
 
-T * elements_ = nullptr;
+T *elements_ = nullptr;
 
 void changeCapacity(size_t c) {
   if (c <= capacity_) {
     return;
   }
-  T * new_elements = new T[c];
+  T *new_elements = new T[c];
+  for (size_t i = 0; i < size_; i++) {
+    new_elements[i] = elements_[i];
+  }
   delete[] elements_;
   elements_ = new_elements;
   capacity_ = c;
 }
 
-void copyOther(const MyVector & other) {
+void copyOther(const MyVector &other) {
   if (elements_ != nullptr) {
     delete[] elements_;
   }
