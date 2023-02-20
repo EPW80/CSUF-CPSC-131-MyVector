@@ -12,7 +12,11 @@ public:
 
 	static constexpr size_t MINIMUM_CAPACITY = 8;
 
-	MyVector(size_t capacity = MyVector::DEFAULT_CAPACITY) : size_(0), capacity_(capacity), elements_(new T[capacity]) {}
+	MyVector(size_t capacity = MyVector::DEFAULT_CAPACITY) {
+		size_ = 0;
+		capacity_ = capacity < MINIMUM_CAPACITY? MINIMUM_CAPACITY : capacity;
+		elements_ = new T[capacity_];
+	}
 
 	MyVector(const MyVector &other) : size_(other.size()), capacity_(other.capacity()), elements_(new T[capacity_])
 	{
@@ -29,20 +33,19 @@ public:
 		elements_ = nullptr;
 	}
 
-	MyVector &operator=(const MyVector &rhs)
-	{
-		if (this != &rhs)
-		{
-			size_ = rhs.size();
-			capacity_ = rhs.capacity();
-			T *new_elements_ = new T[capacity_];
-			for (size_t i = 0; i < size_; i++)
-				new_elements_[i] = rhs[i];
-		}
-		delete[] elements_;
-		elements_ = elements_;
-		return *this;
-	}
+	MyVector &operator=(const MyVector &rhs) {
+  if (this != &rhs) {
+    size_ = rhs.size();
+    capacity_ = rhs.capacity();
+    T *new_elements_ = new T[capacity_];
+    for (size_t i = 0; i < size_; i++)
+      new_elements_[i] = rhs[i];
+  
+    delete[] elements_;
+    elements_ = new_elements_;
+  }
+  return *this;
+}
 
 	T &
 	operator[](size_t index) const
@@ -161,21 +164,18 @@ private:
 
 	T *elements_ = nullptr;
 
-	void changeCapacity(size_t c)
-	{
-		if (c <= capacity_)
-		{
-			return;
-		}
-		T *new_elements = new T[c];
-		for (size_t i = 0; i < size_; i++)
-		{
-			new_elements[i] = elements_[i];
-		}
-		delete[] elements_;
-		elements_ = new_elements;
-		capacity_ = c;
-	}
+	void changeCapacity(size_t c) {
+  if (c <= capacity_) {
+    return;
+  }
+  T *new_elements = new T[c];
+  for (size_t i = 0; i < size_; i++) {
+    new_elements[i] = elements_[i];
+  }
+  delete[] elements_;
+  elements_ = new_elements;
+  capacity_ = c;
+}
 
 	void copyOther(const MyVector &other)
 	{
