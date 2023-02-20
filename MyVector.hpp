@@ -139,7 +139,7 @@ public:
     elements_[size_ - 1].~T();
     size_--;
 
-    if (capacity_ > MINIMUM_CAPACITY && size_ < capacity_ / 2)
+    if (capacity_ > MINIMUM_CAPACITY && size_ < capacity_ / 3)
     {
         size_t new_capacity = std::max(size_, MINIMUM_CAPACITY);
         changeCapacity(new_capacity);
