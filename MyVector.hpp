@@ -5,12 +5,11 @@
 #include <string>
 
 template <typename T>
-class MyVector
-{
+class MyVector {
 public:
-  static constexpr size_t DEFAULT_CAPACITY = 64;
+static constexpr size_t DEFAULT_CAPACITY = 64;
 
-  static constexpr size_t MINIMUM_CAPACITY = 8;
+static constexpr size_t MINIMUM_CAPACITY = 8;
   MyVector(size_t capacity = MyVector::DEFAULT_CAPACITY) {
 	size_ = 0;
 	capacity_ = capacity < MINIMUM_CAPACITY? MINIMUM_CAPACITY : capacity;
@@ -32,7 +31,7 @@ public:
 			capacity_ = rhs.capacity();
 			T *new_elements_ = new T[capacity_];
 			for (size_t i = 0; i < size_; i++) {
-				new_elements_[i] = rhs[i];
+				new_elements_[i] = rhs.elements_[i];
 		}
 		delete[] elements_;
 		elements_ = new_elements_;
