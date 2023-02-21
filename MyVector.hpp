@@ -174,18 +174,18 @@ class MyVector {
 	// handled in case of an exception during the copy.
 	void changeCapacity(size_t c) {
 		size_t prev_size = size_;
-		if (c < size_) 
-            throw std::out_of_range("New capacity is not enough to hold all elements.");
-        T *new_elements = new T[c];
-		for (size_t i = 0; i < size_; i++)
-			new_elements[i] = elements_[i];
-		clear();
-		size_ = 0;
-        delete[] elements_;
-        elements_ = new_elements;
-		size_ = prev_size;
-        capacity_ = c;
-    }
+    	if (c < size_) 
+        	throw std::out_of_range("New capacity is not enough to hold all elements.");
+    	T *new_elements = new T[c];
+    	for (size_t i = 0; i < size_; i++)
+        	new_elements[i] = elements_[i];
+    	clear();
+    	size_ = 0;
+    	delete[] elements_;
+    	elements_ = new_elements;
+    	size_ = prev_size;
+    	capacity_ = c;
+}
 	/**
 	 * Copy another vector's elements into our own, by value.
 	 * Does not simply copy the other vector's array's pointer
