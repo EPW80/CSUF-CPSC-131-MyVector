@@ -11,14 +11,13 @@
 #include "MyVector.hpp"
 
 ///	Your welcome
-// using std::cout, std::endl;  NO!!!! bad habits
+using std::cout, std::endl;
 
 //
-int main() {
+int main()
+{
 	//
 	std::cout << "Hello! Maybe use this source file for debugging?" << std::endl;
-	
+
 	return 0;
 }
-
-
