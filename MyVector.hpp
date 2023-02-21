@@ -119,7 +119,7 @@ public:
 			throw std::out_of_range("Index is out of bounds");
 		}
 		elements_[index].~T();
-		for (size_t i = index; i < size_ - 1; i++)
+		for (size_t i = size_; i >= index; i++)
 		{
 			elements_[i] = elements_[i + 1];
 		}
