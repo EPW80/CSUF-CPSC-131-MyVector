@@ -14,7 +14,7 @@ public:
 	MyVector(size_t capacity = MyVector::DEFAULT_CAPACITY)
 	{
 		size_ = 0;
-		capacity_ = capacity < MINIMUM_CAPACITY ? MINIMUM_CAPACITY : capacity;
+		capacity_ = capacity;
 		elements_ = new T[capacity_];
 	}
 	MyVector(const MyVector &other) : size_(other.size()), capacity_(other.capacity()), elements_(new T[capacity_])
