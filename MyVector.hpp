@@ -39,7 +39,12 @@ class MyVector {
 	}
 	
 	/// Operator overload to at()
-	T &operator[](size_t index) const { return elements_[index]; }
+	T &operator[](size_t index) const {
+	if (index >= size_)
+		throw std::range_error("Index out of range");
+	return elements_[index];
+}
+
 	/************
 	 * Accessors
 	 ************/
@@ -56,7 +61,7 @@ class MyVector {
 	/// Return a reference to the element at an index
 	T &at(size_t index) const {
 		if (index >= size_)
-			throw std::out_of_range("Index is out of range");
+			throw std::range_error("Index is out of range");
 		return elements_[index];
 	}
 	/***********
@@ -130,14 +135,20 @@ class MyVector {
 	size_t erase(size_t index) {
 		if (index >= size_)
 			throw std::out_of_range("Index is out of bounds");
-		if(size_ < capacity_ / 3) 
-			changeCapacity(capacity_ / 2);
-		elements_[index].~T();
-		for (size_t i = index; i < size_ - 1; i++)
-			elements_[i] = elements_[i + 1];
-		size_--;
-		return size_;
-	}
+		if (size_ < capacity_) {
+			if (size_ <= capacity_ / 3) {
+				changeCapacity(capacity_ / 2);
+			} else {
+				changeCapacity(capacity_);
+        }
+    }
+	elements_[index].~T();
+    for (size_t i = index; i < size_ - 1; i++)
+        elements_[i] = elements_[i + 1];
+    size_--;
+    return size_;
+}
+
 	/**
 	*Calls each element's destructor, then clears our internal
 	*data by setting size to zero and resetting the capacity.
