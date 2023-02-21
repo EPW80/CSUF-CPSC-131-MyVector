@@ -101,10 +101,10 @@ static constexpr size_t MINIMUM_CAPACITY = 8;
 		if (index >= size_){
         throw std::out_of_range("Index is out of bounds");
     }
+	elements_[index].~T();
     for (size_t i = index; i < size_ - 1; i++) {
         elements_[i] = elements_[i + 1];
     }
-    elements_[size_ - 1].~T();
     size_--;
     if (capacity_ > MINIMUM_CAPACITY && size_ < capacity_ / 3) {
         size_t new_capacity = std::max(size_, MINIMUM_CAPACITY);
