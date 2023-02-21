@@ -146,8 +146,6 @@ class MyVector {
 	*data by setting size to zero and resetting the capacity.
 	*/
 	void clear() {
-		for (size_t i = 0; i < size_; i++) 
-			elements_[i].~T();
 		size_ = 0;
 	}
 	/**
@@ -182,6 +180,7 @@ class MyVector {
 		for (size_t i = 0; i < size_; i++)
 			new_elements[i] = elements_[i];
 		clear();
+		size_ = 0;
         delete[] elements_;
         elements_ = new_elements;
 		size_ = prev_size;
