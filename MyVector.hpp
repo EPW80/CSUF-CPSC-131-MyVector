@@ -114,7 +114,7 @@ class MyVector {
 			reserve(capacity_ * 2);
 		elements_[index].~T();
 		for(size_t i = size_; i > index; --i)
-			elements_[i] = elements[i - 1]; 
+			elements_[i] = elements_[i - 1]; 
 		elements_[index] = element;
 		size_++;
 		return elements_[index];
@@ -135,7 +135,7 @@ class MyVector {
 			throw std::out_of_range("Index is out of bounds");
 		if(size_ < capacity_ / 3) 
 			changeCapacity(capacity_ / 2);
-		for (int i = index; i < size_ - 1; i++)
+		for (size_t i = index; i < size_ - 1; i++)
 			elements_[i] = elements_[i + 1];
 		clear();
 		delete elements_[index];
