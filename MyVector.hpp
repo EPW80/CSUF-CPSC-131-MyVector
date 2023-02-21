@@ -118,10 +118,11 @@ public:
 		{
 			throw std::out_of_range("Index is out of bounds");
 		}
-		if (capacity_ > MINIMUM_CAPACITY && size_ < capacity_ / 3)
+		if (size_ < capacity_ / 3)
 		{
-			size_t new_capacity = std::max(size_, MINIMUM_CAPACITY);
-			changeCapacity(new_capacity);
+			changeCapacity(capacity_ / 2);
+		} else {
+			changeCapacity(capacity_);
 		}
 		elements_[index].~T();
 		for (size_t i = index; i < size - 1; i++)
