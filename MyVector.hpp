@@ -157,7 +157,7 @@ private:
 	T *elements_ = nullptr;
 	void changeCapacity(size_t c)
 	{
-		if (c <= capacity_)
+		if (c == capacity_)
 		{
 			return;
 		}
