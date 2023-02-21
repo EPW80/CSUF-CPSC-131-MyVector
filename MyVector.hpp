@@ -106,7 +106,7 @@ static constexpr size_t MINIMUM_CAPACITY = 8;
         elements_[i] = elements_[i + 1];
     }
     size_--;
-    if (capacity_ > MINIMUM_CAPACITY && size_ < capacity_ / 3) {
+    if (capacity_ > MINIMUM_CAPACITY && size_ < capacity_ / 4) {
         size_t new_capacity = std::max(size_, MINIMUM_CAPACITY);
         changeCapacity(new_capacity);
     }
