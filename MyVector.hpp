@@ -104,9 +104,9 @@ public:
 		{
 			reserve(capacity_ * 2);
 		}
-		for (size_t i = size_; i > index; --i)
+		for (size_t i = size_ - 1; i > index; --i)
 		{
-			elements_[i] = elements_[i - 1];
+			elements_[i + 1] = elements_[i];
 		}
 		elements_[index] = element;
 		size_++;
@@ -127,7 +127,7 @@ public:
 		elements_[index].~T();
 		for (size_t i = index; i < size_ - 1; i++)
 		{
-			elements_[i] = elements_[i];
+			elements_[i] = elements_[i + 1];
 		}
 		size_--;
 		
