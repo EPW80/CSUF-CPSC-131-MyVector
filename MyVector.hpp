@@ -17,7 +17,7 @@ static constexpr size_t MINIMUM_CAPACITY = 8;
 	}
 	MyVector(const MyVector &other) : size_(other.size()), capacity_(other.capacity()), elements_(new T[capacity_]) {
 		for (size_t i = 0; i < size_; i++){
-			elements_[i] = other.elements_[i];
+			elements_[i] = other[i];
 		}
 	}
 	~MyVector() {
@@ -31,7 +31,7 @@ static constexpr size_t MINIMUM_CAPACITY = 8;
 			capacity_ = rhs.capacity();
 			T *new_elements_ = new T[capacity_];
 			for (size_t i = 0; i < size_; i++) {
-				new_elements_[i] = rhs.elements_[i];
+				new_elements_[i] = rhs[i];
 		}
 		delete[] elements_;
 		elements_ = new_elements_;
@@ -68,7 +68,7 @@ static constexpr size_t MINIMUM_CAPACITY = 8;
 
 	T &set(size_t index, const T &element) {
 		if (index >= size_) {
-			throw std::out_of_range("Outside the size boundary");
+			throw std::out_of_range("Index is out of range");
 		}
 		elements_[index].~T();
 		elements_[index] = element;
@@ -91,14 +91,14 @@ static constexpr size_t MINIMUM_CAPACITY = 8;
 			reserve(capacity_ * 2);
 		}
 		for (size_t i = size_; i > index; --i) {
-			elements_[index] = elements_[i - 1];
+			elements_[i] = elements_[i - 1];
 		}
 		elements_[index] = element;
 		size_++;
 		return elements_[index];
 	}
 	size_t erase(size_t index) {
-		if (index >= size_){
+		if (index >= size_) { 
         throw std::out_of_range("Index is out of bounds");
     }
 	elements_[index].~T();
