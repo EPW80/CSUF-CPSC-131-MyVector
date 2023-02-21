@@ -90,8 +90,8 @@ static constexpr size_t MINIMUM_CAPACITY = 8;
 		if (size_ == capacity_) {
 			reserve(capacity_ * 2);
 		}
-		for (size_t i = size_ - 1; i >= index; --i) {
-			elements_[i + 1] = elements_[i];
+		for (size_t i = size_; i > index; --i) {
+			elements_[index] = elements_[i - 1];
 		}
 		elements_[index] = element;
 		size_++;
@@ -145,7 +145,7 @@ private:
 		capacity_ = other.capacity();
 		elements_ = new T[capacity_];
 		for (size_t i = 0; i < size_; i++){
-			elements_[i] = other.elements_[i];
+			elements_[i] = other[i];
 		}
 	}
 };
