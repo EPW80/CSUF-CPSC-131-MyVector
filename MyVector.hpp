@@ -125,9 +125,9 @@ public:
 			changeCapacity(capacity_);
 		}
 		elements_[index].~T();
-		for (size_t i = index; i < size - 1; i++)
+		for (size_t i = index; i < size_ - 1; i++)
 		{
-			elements_[i] = elements_[i + 1];
+			elements_[i] = elements_[i];
 		}
 		size_--;
 		
@@ -157,13 +157,12 @@ private:
 		T *new_elements = new T[c];
 		for (size_t i = 0; i < size_; i++)
 		{
-			new_elements[i] = elements_[i + 1];
+			new_elements[i] = elements_[i];
 		}
 		clear();
 		delete[] elements_;
 		elements_ = new_elements;
-		elements_ = nullptr;
-
+		
 		capacity_ = c;
 	}
 	void copyOther(const MyVector &other)
