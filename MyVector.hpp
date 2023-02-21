@@ -67,11 +67,9 @@ class MyVector {
 	* Useful if we know we're about to add a large number of elements, and we'd like to avoid the overhead of many internal changes to capacity.
 	*/
 	void reserve(size_t capacity) {
-		if (capacity < this->capacity_) 
-			throw std::range_error("Cannot use reserve to shrink space");
-		changeCapacity(capacity);
-    
-}
+		if (capacity > capacity_) 
+			changeCapacity(capacity);
+		}
 
 	/**
 	* Set an element at an index.
@@ -92,7 +90,7 @@ class MyVector {
 	*/
 
 	// The insert function takes care of resizing the vector if needed and shifting the existing elements to make space for the new element.
-	T &push_back(const T &element) { insert(size_, element); return elements_[size_ - 1]; }
+	T &push_back(const T &element) { return insert(size_, element); }
 	/**
 	* Remove the last element in our vector, decreasing the size by 1
 	* Should rely on the erase() function to avoid repeating code.
@@ -111,7 +109,6 @@ class MyVector {
 			throw std::out_of_range("Index is out of range");
 		if (size_ == capacity_)
 			reserve(capacity_ * 2);
-		
 		for(size_t i = size_; i > index; --i)
 			elements_[i] = elements_[i - 1]; 
 		elements_[index].~T();
@@ -146,7 +143,9 @@ class MyVector {
 	*data by setting size to zero and resetting the capacity.
 	*/
 	void clear() {
-		size_ = 0;
+		for (size_t i = 0; i < size_; i++)
+            elements_[i].~T();
+        size_ = 0;
 	}
 	/**
 	 *Begin private members and methods.
