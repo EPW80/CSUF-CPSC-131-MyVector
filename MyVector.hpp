@@ -1,4 +1,3 @@
-
 #include <assert.h>
 #include <iostream>
 #include <string>
@@ -93,7 +92,7 @@ class MyVector {
 	*/
 
 	// The insert function takes care of resizing the vector if needed and shifting the existing elements to make space for the new element.
-	T &push_back(const T &element) { return insert(size_, element); }
+	T &push_back(const T &element) { insert(size_, element); return elements_[size_ - 1]; }
 	/**
 	* Remove the last element in our vector, decreasing the size by 1
 	* Should rely on the erase() function to avoid repeating code.
@@ -135,10 +134,9 @@ class MyVector {
 			throw std::out_of_range("Index is out of bounds");
 		if(size_ < capacity_ / 3) 
 			changeCapacity(capacity_ / 2);
+		elements_[index].~T();
 		for (size_t i = index; i < size_ - 1; i++)
 			elements_[i] = elements_[i + 1];
-		clear();
-		delete elements_[index];
 		size_--;
 		return size_;
 	}
