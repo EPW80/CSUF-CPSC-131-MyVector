@@ -118,17 +118,18 @@ public:
 		{
 			throw std::out_of_range("Index is out of bounds");
 		}
-		elements_[index].~T();
-		for (size_t i = size_; i >= index; i++)
-		{
-			elements_[i] = elements_[i + 1];
-		}
-		size_--;
 		if (capacity_ > MINIMUM_CAPACITY && size_ < capacity_ / 3)
 		{
 			size_t new_capacity = std::max(size_, MINIMUM_CAPACITY);
 			changeCapacity(new_capacity);
 		}
+		elements_[index].~T();
+		for (size_t i = index; i < size - 1; i++)
+		{
+			elements_[i] = elements_[i + 1];
+		}
+		size_--;
+		
 		return size_;
 	}
 	void clear()
@@ -150,15 +151,18 @@ private:
 	{
 		if (c < size_)
 		{
-			return;
+			throw std::out_of_range("Cannot shrink vector");
 		}
 		T *new_elements = new T[c];
 		for (size_t i = 0; i < size_; i++)
 		{
-			new_elements[i] = elements_[i];
+			new_elements[i] = elements_[i + 1];
 		}
+		clear();
 		delete[] elements_;
 		elements_ = new_elements;
+		elements_ = nullptr;
+
 		capacity_ = c;
 	}
 	void copyOther(const MyVector &other)
