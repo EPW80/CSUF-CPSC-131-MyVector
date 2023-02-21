@@ -111,9 +111,10 @@ class MyVector {
 			throw std::out_of_range("Index is out of range");
 		if (size_ == capacity_)
 			reserve(capacity_ * 2);
-		elements_[index].~T();
+		
 		for(size_t i = size_; i > index; --i)
 			elements_[i] = elements_[i - 1]; 
+		elements_[index].~T();
 		elements_[index] = element;
 		size_++;
 		return elements_[index];
@@ -174,6 +175,7 @@ class MyVector {
 	// The try-catch block you added will ensure that the new memory allocation is properly 
 	// handled in case of an exception during the copy.
 	void changeCapacity(size_t c) {
+		size_t prev_size = size_;
 		if (c < size_) 
             throw std::out_of_range("New capacity is not enough to hold all elements.");
         T *new_elements = new T[c];
@@ -182,6 +184,7 @@ class MyVector {
 		clear();
         delete[] elements_;
         elements_ = new_elements;
+		size_ = prev_size;
         capacity_ = c;
     }
 	/**
