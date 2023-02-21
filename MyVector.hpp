@@ -32,17 +32,8 @@ public:
 	}
 	MyVector &operator=(const MyVector &rhs)
 	{
-		if (this != &rhs)
-		{
-			size_ = rhs.size();
-			capacity_ = rhs.capacity();
-			T *new_elements_ = new T[capacity_];
-			for (size_t i = 0; i < size_; i++)
-			{
-				new_elements_[i] = rhs[i];
-			}
-			delete[] elements_;
-			elements_ = new_elements_;
+		if(this != &rhs) {
+			copyOther(rhs);
 		}
 		return *this;
 	}
@@ -157,7 +148,7 @@ private:
 	T *elements_ = nullptr;
 	void changeCapacity(size_t c)
 	{
-		if (c < capacity_)
+		if (c < size_)
 		{
 			return;
 		}
